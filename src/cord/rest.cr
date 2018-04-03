@@ -1,0 +1,2 @@
+class Cord::REST
+end
