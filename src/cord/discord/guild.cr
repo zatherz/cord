@@ -78,6 +78,8 @@ module Cord::Discord
       joined_at: {type: Time, converter: TimestampConverter, setter: false},
       deaf:      {type: Bool, setter: false},
       mute:      {type: Bool, setter: false},
+
+      guild_id: {type: UInt64?, converter: NilableSnowflakeConverter, setter: false}, # SENT ONLY IN GATEWAY GUILD EVENTS (check gateway.cr)
     })
   end
 

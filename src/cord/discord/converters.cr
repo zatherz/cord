@@ -42,7 +42,7 @@ module Cord::Discord
       if value
         value.map(&.to_s).to_json builder
       else
-        builder.nulll
+        builder.null
       end
     end
   end
@@ -58,8 +58,9 @@ module Cord::Discord
   end
 
   # shamelessly stolen from discordcr
+
   module TimestampConverter
-    def self.from_json(parser : JSON::PullParser)
+    def self.from_json(parser : JSON::PullParser) : Time
       time_str = parser.read_string
 
       begin
@@ -71,7 +72,7 @@ module Cord::Discord
   end
 
   module NilableTimestampConverter
-    def self.from_json(parser : JSON::PullParser)
+    def self.from_json(parser : JSON::PullParser) : Time?
       parser.read_null_or do
         time_str = parser.read_string
 
@@ -80,6 +81,30 @@ module Cord::Discord
         rescue Time::Format::Error
           Time::Format.new("%FT%T%:z", Time::Kind::Utc).parse(time_str)
         end
+      end
+    end
+  end
+
+  module MillisecondEpochConverter
+    def self.from_json(parser : JSON::PullParser) : Time
+      Time.epoch_ms(parser.read_int)
+    end
+
+    def self.to_json(value : Time, builder : JSON::Builder)
+      builder.scalar value
+    end
+  end
+
+  module NilableMillisecondEpochConverter
+    def self.from_json(parser : JSON::PullParser) : Time?
+      parser.read_null_or { Time.epoch_ms(parser.read_int) }
+    end
+
+    def self.to_json(value : Time, builder : JSON::Builder)
+      if value
+        builder.scalar value
+      else
+        builder.null
       end
     end
   end

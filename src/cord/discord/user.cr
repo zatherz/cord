@@ -11,6 +11,8 @@ module Cord::Discord
       mfa_enabled:   {type: Bool?, setter: false},
       verified:      {type: Bool?, setter: false},
       email:         {type: String?, setter: false},
+
+      guild_id: {type: UInt64?, converter: NilableSnowflakeConverter, setter: false}, # SENT ONLY IN GATEWAY GUILD EVENTS (check gateway.cr)
     })
   end
 

@@ -1,4 +1,22 @@
+require "./discord/gateway"
+
 module Cord
+  CONNECTION_PROPERTIES = GatewayConnectionProperties.new(
+    {% if flag?(:linux) %}
+      os: "linux",
+    {% elsif flag?(:win) %}
+      os: "windows",
+    {% elsif flag?(:darwin) %}
+      os: "mac",
+    {% else %}
+      os: "unknown",
+    {% end %}
+    browser: "cord",
+    device: "cord"
+  )
+
+  
+
   abstract class Client
     getter token : String
     @rest : REST
