@@ -1,28 +1,26 @@
 require "./discord/gateway"
+require "./discord/rest"
 
 module Cord
-  CONNECTION_PROPERTIES = GatewayConnectionProperties.new(
-    {% if flag?(:linux) %}
-      os: "linux",
-    {% elsif flag?(:win) %}
-      os: "windows",
-    {% elsif flag?(:darwin) %}
-      os: "mac",
-    {% else %}
-      os: "unknown",
-    {% end %}
-    browser: "cord",
-    device: "cord"
-  )
+  {% begin %}
+    CONNECTION_PROPERTIES = GatewayConnectionProperties.new(
+      {% if flag?(:linux) %}
+        os: "linux",
+      {% elsif flag?(:win) %}
+        os: "windows",
+      {% elsif flag?(:darwin) %}
+        os: "mac",
+      {% else %}
+        os: "unknown",
+      {% end %}
+      browser: "cord",
+      device: "cord"
+    )
+  {% end %}
 
-  
-
-  abstract class Client
+  class Bot
     getter token : String
-    @rest : REST
-  end
 
-  class Bot < Client
     def initialize(token : String)
       if token.starts_with? "Bot"
         @token = token

@@ -92,6 +92,13 @@ module Cord::Discord
     UnknownEncryptionMode = 4016
   end
 
+  struct RESTError
+    JSON.mapping({
+      code:    {type: JSONError, setter: false},
+      message: {type: String, setter: false},
+    })
+  end
+
   enum JSONError
     UnknownAccount     = 10001
     UnknownApplication
